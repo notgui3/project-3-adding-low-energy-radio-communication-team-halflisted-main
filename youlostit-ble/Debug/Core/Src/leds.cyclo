@@ -1,0 +1,2 @@
+../Core/Src/leds.c:12:6:leds_init	1
+../Core/Src/leds.c:58:6:leds_set	3
