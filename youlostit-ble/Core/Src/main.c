@@ -21,7 +21,6 @@
 //#include "ble_commands.h"
 #include "ble.h"
 
-//#include "ble_commands.h"
 
 //Include Standard Library
 #include <stdlib.h>
@@ -29,14 +28,14 @@
 //includes std io
 #include <stdio.h>
 
-//includes string
-#include <string.h>
+////includes string
+//#include <string.h>
 
-//Include Math Functions
-#include <math.h>
+////Include Math Functions
+//#include <math.h>
 
-/* Include LED driver */
-#include "leds.h"
+///* Include LED driver */
+//#include "leds.h"
 
 //Include Timer driver
 #include "timer.h"
@@ -53,12 +52,12 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_SPI3_Init(void);
 
-// Important for TIM2_IRQHandler. See comment in function definition.
-#define bitmask_uint8 0xC0    // 0b1100_0000
-#define bitmask_uint16 0xC000 // 0b1100_0000_0000_0000
+//// Important for TIM2_IRQHandler. See comment in function definition.
+//#define bitmask_uint8 0xC0    // 0b1100_0000
+//#define bitmask_uint16 0xC000 // 0b1100_0000_0000_0000
 
 //Timer for blinking, scaled by TIM2 interrupt --> Currently at 50ms for ARR register --> 1200 * 50ms = 1 minute
-#define timeToBlink 1200
+#define timeToBlink 6
 //Sensitiviy for the +- margin of error for checking if the board moved
 #define sensitivity 1200
 
@@ -72,12 +71,12 @@ static int16_t prevX = 0;
 static int16_t prevY = 0;
 static int16_t prevZ = 0;
 
-// Preamble hex value for setting the LEDs
-static volatile uint8_t preamble = 0x99; // 0b10011001
-// Yoav's Student ID for setting the LEDs
-static volatile uint16_t student_id = 7031; // Yoav's student ID 0b0001_1011_0111_0111
-// Time passed for setting the LEDs, should be equal to the lostCount/timeToBlink --> tells how many minutes have passed
-static volatile uint8_t min_lost = 0;
+//// Preamble hex value for setting the LEDs
+//static volatile uint8_t preamble = 0x99; // 0b10011001
+//// Yoav's Student ID for setting the LEDs
+//static volatile uint16_t student_id = 7031; // Yoav's student ID 0b0001_1011_0111_0111
+//// Time passed for setting the LEDs, should be equal to the lostCount/timeToBlink --> tells how many minutes have passed
+//static volatile uint8_t min_lost = 0;
 
 // How many 50ms cycles has passed without moving, resets when changeCount passes a threshhold
 static volatile uint32_t lostCount = 0;
@@ -100,6 +99,66 @@ int _write(int file, char *ptr, int len) {
 }
 
 
+void GPIO_OFF(){
+	//GPIO
+		GPIOA->MODER |= ~GPIOA->MODER;
+		GPIOA->OTYPER &= ~GPIOA->OTYPER;
+		GPIOA->OSPEEDR &= ~GPIOA->OSPEEDR;
+		GPIOA->PUPDR &= ~GPIOA->PUPDR;
+		GPIOA->ODR &= ~GPIOA->ODR;
+//		GPIOA->ASCR &= ~GPIOA->ASCR;
+
+		GPIOB->MODER |= ~GPIOB->MODER;
+		GPIOB->OTYPER &= ~GPIOB->OTYPER;
+		GPIOB->OSPEEDR &= ~GPIOB->OSPEEDR;
+		GPIOB->PUPDR &= ~GPIOB->PUPDR;
+		GPIOB->ODR &= ~GPIOB->ODR;
+//		GPIOB->ASCR &= ~GPIOB->ASCR;
+//
+		GPIOC->MODER |= ~GPIOC->MODER;
+		GPIOC->OTYPER &= ~GPIOC->OTYPER;
+		GPIOC->OSPEEDR &= ~GPIOC->OSPEEDR;
+		GPIOC->PUPDR &= ~GPIOC->PUPDR;
+		GPIOC->ODR &= ~GPIOC->ODR;
+//		GPIOC->ASCR &= ~GPIOC->ASCR;
+//
+		GPIOD->MODER |= ~GPIOD->MODER;
+		GPIOD->OTYPER &= ~GPIOD->OTYPER;
+		GPIOD->OSPEEDR &= ~GPIOD->OSPEEDR;
+		GPIOD->PUPDR &= ~GPIOD->PUPDR;
+		GPIOD->ODR &= ~GPIOD->ODR;
+//		GPIOD->ASCR &= ~GPIOD->ASCR;
+
+		GPIOE->MODER |= ~GPIOE->MODER;
+		GPIOE->OTYPER &= ~GPIOE->OTYPER;
+		GPIOE->OSPEEDR &= ~GPIOE->OSPEEDR;
+		GPIOE->PUPDR &= ~GPIOE->PUPDR;
+		GPIOE->ODR &= ~GPIOE->ODR;
+//		GPIOE->ASCR &= ~GPIOE->ASCR;
+
+		GPIOF->MODER |= ~GPIOF->MODER;
+		GPIOF->OTYPER &= ~GPIOF->OTYPER;
+		GPIOF->OSPEEDR &= ~GPIOF->OSPEEDR;
+		GPIOF->PUPDR &= ~GPIOF->PUPDR;
+		GPIOF->ODR &= ~GPIOF->ODR;
+		GPIOF->ASCR &= ~GPIOF->ASCR;
+
+		GPIOG->MODER |= ~GPIOG->MODER;
+		GPIOG->OTYPER &= ~GPIOG->OTYPER;
+		GPIOG->OSPEEDR &= ~GPIOG->OSPEEDR;
+		GPIOG->PUPDR &= ~GPIOG->PUPDR;
+		GPIOG->ODR &= ~GPIOG->ODR;
+		GPIOG->ASCR &= ~GPIOG->ASCR;
+
+		GPIOH->MODER |= ~GPIOH->MODER;
+		GPIOH->OTYPER &= ~GPIOH->OTYPER;
+		GPIOH->OSPEEDR &= ~GPIOH->OSPEEDR;
+		GPIOH->PUPDR &= ~GPIOH->PUPDR;
+		GPIOH->ODR &= ~GPIOH->ODR;
+		GPIOH->ASCR &= ~GPIOH->ASCR;
+}
+
+
 
 /**
   * @brief  The application entry point.
@@ -107,6 +166,51 @@ int _write(int file, char *ptr, int len) {
   */
 int main(void)
 {
+	for(int i = 0; i < 82; i++){
+		NVIC_DisableIRQ(i);
+	}
+
+//
+//	RCC->CFGR |= RCC_CFGR_STOPWUCK;
+//	RCC->APB1SMENR1 |= RCC_APB1SMENR1_TIM2SMEN;
+	RCC->CR &= ~RCC->CR;
+	RCC->AHB1ENR &= ~RCC->AHB1ENR;
+	RCC->AHB2ENR &= ~RCC->AHB2ENR;
+	RCC->AHB3ENR &= ~RCC->AHB3ENR;
+	RCC->APB1ENR1 &= ~RCC->APB1ENR1;
+	RCC->APB1ENR2 &= ~RCC->APB1ENR2;
+	RCC->APB2ENR &= ~RCC->APB2ENR;
+	I2C1->CR1 &= ~I2C_CR1_PE;
+	I2C3->CR1 &= ~I2C_CR1_PE;
+
+	//Turn voltage to 1.0
+	FLASH->ACR |= FLASH_ACR_LATENCY_1WS;
+	PWR->CR1 &= ~PWR_CR1_VOS;
+	PWR->CR1 |= PWR_CR1_VOS_1;
+
+	GPIO_OFF();
+
+
+	//Turn off RTC
+	RCC->BDCR &= ~RCC_BDCR_RTCEN;
+	RCC->BDCR &= ~RCC_BDCR_LSEON;
+
+	//LPUART
+	LPUART1->CR1 &= ~LPUART1->CR1;
+
+	//Turn off all clocks in sleep and stop
+	RCC->AHB1SMENR &= ~RCC->AHB1SMENR;
+	RCC->AHB2SMENR &= ~RCC->AHB2SMENR;
+	RCC->APB1SMENR1 &= ~RCC->APB1SMENR1;
+	RCC->APB1SMENR2 &= ~RCC->APB1SMENR2;
+	RCC->APB2SMENR &= ~RCC->APB2SMENR;
+
+//	//Disable Voltage Reference Buffer
+//	VREFBUF->CSR &= ~VREFBUF->CSR;
+
+
+
+
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
    HAL_Init();
 
@@ -117,6 +221,14 @@ int main(void)
   MX_GPIO_Init();
   MX_SPI3_Init();
 
+  GPIOA->OSPEEDR &= ~GPIOA->OSPEEDR;
+  GPIOB->OSPEEDR &= ~GPIOB->OSPEEDR;
+  GPIOC->OSPEEDR &= ~GPIOC->OSPEEDR;
+  GPIOD->OSPEEDR &= ~GPIOD->OSPEEDR;
+  GPIOE->OSPEEDR &= ~GPIOE->OSPEEDR;
+
+
+
   //RESET BLE MODULE
   HAL_GPIO_WritePin(BLE_RESET_GPIO_Port,BLE_RESET_Pin,GPIO_PIN_RESET);
   HAL_Delay(10);
@@ -124,20 +236,24 @@ int main(void)
 
   ble_init();
 
-  // intialize LEDs
-  leds_init();
+//  // intialize LEDs
+//  leds_init();
+//  leds_set(0);
 
-  // Initialize Timer
-  timer_init(TIM2);
+//  // Initialize Timer
+//  timer_init(TIM2);
+//
+//  //Set the Timer2 Interrup,t to a period of 50 ms
+//  timer_set_ms(TIM2, 1227);
+
+  lptim_init();
+  lptim_set_ms(2500);
 
   // Initialize I2C2 in master mode to connect with the accelerometer
   i2c_init();
 
   // Initialize the accelerometer
   lsm6dsl_init();
-
-  //Set the Timer2 Interrupt to a period of 50 ms
-  timer_set_ms(TIM2, 49);
 
   //initially set it undiscoverable
   setDiscoverability(0);
@@ -148,10 +264,20 @@ int main(void)
 
   while (1)
   {
+//	  	  	//Enable GPIOB Clock
+	  		RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
+	  		//Enable I2C2 Clock
+	  		RCC->APB1ENR1 |= RCC_APB1ENR1_I2C2EN;
 
-	  //Read the current accelerometer X, Y, Z Values
+	  	  	//Read the current accelerometer X, Y, Z Values
 	  		lsm6dsl_read_xyz(&currX, &currY, &currZ);
 	  		// 16393 = 1G
+
+//	  		//Enable GPIOB Clock
+	  		RCC->AHB2ENR &= ~RCC_AHB2ENR_GPIOBEN;
+
+			//Enable I2C2 Clock
+			RCC->APB1ENR1 &= ~RCC_APB1ENR1_I2C2EN;
 
 
 	  		// If the difference of the current and previous values X, Y, Z acceleration values are
@@ -168,13 +294,14 @@ int main(void)
 
 	  		// If the changeCount is large than 8, we considered it moved,
 	  		// set the lostCount and changeCount to 0
-	  		if(changeCount > 8){
+	  		if(changeCount > 0){
 	  			lostCount = 0;
 	  			changeCount = 0;
+	  			//lptim_reset();
 	  		}
 
 	  		// Print the values of lostCount and changeCount and the current accelerometer values
-	  		printf("lostCount: %u      changeCount: %u      %d, %d, %d \n", lostCount, changeCount, currX, currY, currZ);
+	  		//printf("lostCount: %u      changeCount: %u      %d, %d, %d \n", lostCount, changeCount, currX, currY, currZ);
 
 	  		// Set previous X, Y, Z acceleration values to the current values for comparison in the next loop
 	  		prevX = currX;
@@ -182,58 +309,125 @@ int main(void)
 	  		prevZ = currZ;
 
 
+
 	  		//Default code
 	  		if(!nonDiscoverable && HAL_GPIO_ReadPin(BLE_INT_GPIO_Port,BLE_INT_Pin)){
+	  			RCC->CR |= RCC_CR_MSIRANGE_7;
 	  			catchBLE();
+	  			RCC->CR |= RCC_CR_MSIRANGE_1;
 	  		}
 
+	  		//need to make disconnectBLE and setDiscoverability to fire only once
+	  		//--> used the discoverability variable
 
 	  		// If the lostCount is lower than the timeToBlink (1 min), which indicates its not lost,
 	  		//then disconnect the BLE and make it so its not discoverable by setting the discoverability to 0
 	  		//Else set the discoverability to 0 and the IRQ handler will set discoverability to 1
-	  		if(lostCount < timeToBlink){
-	  			leds_set(0);
+	  		if((lostCount < timeToBlink) & (nonDiscoverable == 0)){
+	  			RCC->CR |= RCC_CR_MSIRANGE_7;
 	  			disconnectBLE();
 	  			setDiscoverability(0);
+	  			//standbyBle();
+	  			RCC->CR |= RCC_CR_MSIRANGE_1;
 	  			nonDiscoverable = 1;
 	  		}else{
 	  			nonDiscoverable = 0;
 	  		}
 
+	  		//Interrupt fires every 50ms
+			// If the lostCount is larger or equal than the timeToBlink (been a minute or over),
+			//It indicates that is lost and sets the discoverability to 1 to allow it to be connect through BLE
+			//Every 10 seconds send a message with PTGui lost with the amount of seconds has passed in lost mode
+			if( (lostCount >= timeToBlink) && ((lostCount%(1)) == 0) ){
+
+				RCC->CR |= RCC_CR_MSIRANGE_7;
+
+				setDiscoverability(1);
+
+				RCC->CR |= RCC_CR_MSIRANGE_1;
+				if(!nonDiscoverable){
+					  // Send a string to the NORDIC UART service, remember to not include the newline
+					  unsigned char test_str[20] = "PTGui lost ";
+					  //Subtract and divide down the lostCount to get the amount of seconds after being lost
+					  // Store the number of seconds in lost mode in lostCountDiv
+					  int lostCountDiv = (lostCount-timeToBlink)*10;
+					  //Concatenate the lostCountDiv with the message needed to be sent
+					  snprintf(test_str, 20, "PTGui lost %ds ", lostCountDiv);
+					  //Send the message through BLE
+					  RCC->CR |= RCC_CR_MSIRANGE_7;
+					  updateCharValue(NORDIC_UART_SERVICE_HANDLE, READ_CHAR_HANDLE, 0, strlen(test_str)-1, test_str);
+					  RCC->CR |= RCC_CR_MSIRANGE_1;
+				 }
+			}
+
+	  		//Clear LPMS bits to set them to "000” (Stop mode)
+	  		PWR->CR1 &= ~PWR_CR1_LPMS;
+	  		PWR->CR1 |= PWR_CR1_LPMS_STOP2;
+
+	  		// Prepare to enter deep sleep mode (Stop mode)
+	  		// Set the SLEEPDEEP bit in the System Control Register
+	  		SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+	  		// Execute the Wait-For-Interrupt instruction.
+	  		// This puts the CPU into deep sleep mode until an interrupt occurs.
+	  		HAL_SuspendTick();
+//	  		FLASH->ACR |= FLASH_ACR_SLEEP_PD;
+	  		RCC->CR |= RCC_CR_MSIRANGE_1;
+//	  		GPIO_OFF();
+//	  		PWR->CR1 |= PWR_CR1_LPR;
+//	  		RCC->APB1ENR1 |= RCC_APB1ENR1_TIM2EN;
+
+	  		__WFI();
+	  		SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+//	  		MX_GPIO_Init();
+//	  		i2c_init();
+	  		//HAL_PWREx_EnterSTOP2Mode(PWR_SLEEPENTRY_WFI);
+
+//	  		PWR->CR1 &= ~PWR_CR1_LPR;
+//	  		while((PWR->SR2 & PWR_SR2_REGLPF) > 0){
+//
+//	  		}
+//	  		RCC->CR |= RCC_CR_MSIRANGE_;
+	  		//RCC->APB1ENR1 &= ~RCC_APB1ENR1_TIM2EN;
+	  		HAL_ResumeTick();
 
 
-	  // Wait for interrupt, only uncomment if low power is needed
-	  //__WFI();
   }
 }
 
-
-void TIM2_IRQHandler(){
-	//Interrupt fires every 50ms
-	// If the lostCount is larger or equal than the timeToBlink (been a minute or over),
-	//It indicates that is lost and sets the discoverability to 1 to allow it to be connect through BLE
-	//Every 10 seconds send a message with PTGui lost with the amount of seconds has passed in lost mode
-	if( (lostCount >= timeToBlink) && ((lostCount%200) == 1) ){
+//volatile int led_set = 2;
+////Can turn off the clocks that are not TIM2
+////Can turn off I2C while not reading --> fast and turn off longer or slow
+//void TIM2_IRQHandler(){
+//	if(led_set == 1){
+//		led_set = 2;
+//	}
+//	else{
+//		led_set = 1;
+//	}
+//	leds_set(led_set);
 //
-		setDiscoverability(1);
-		if(!nonDiscoverable){
-			  // Send a string to the NORDIC UART service, remember to not include the newline
-			  unsigned char test_str[20] = "PTGui lost ";
-			  //Subtract and divide down the lostCount to get the amount of seconds after being lost
-			  // Store the number of seconds in lost mode in lostCountDiv
-			  int lostCountDiv = (lostCount-timeToBlink)/20;
-			  //Concatenate the lostCountDiv with the message needed to be sent
-			  snprintf(test_str, 20, "PTGui lost %ds ", lostCountDiv);
-			  //Send the message through BLE
-			  updateCharValue(NORDIC_UART_SERVICE_HANDLE, READ_CHAR_HANDLE, 0, strlen(test_str)-1, test_str);
-		  }
-	}
+//
+//	//Increment the lostCounter every time Timer 2 interrupt activates
+//	lostCount++;
+//
+//	// Reset update flag.
+//	TIM2->SR &= ~(TIM_SR_UIF);
+//
+//}
 
-	//Increment the lostCounter every time Timer 2 interrupt activates
+void LPTIM1_IRQHandler(){
+
+//	if(led_set == 1){
+//			led_set = 2;
+//		}
+//		else{
+//			led_set = 1;
+//		}
+//		leds_set(led_set);
+
 	lostCount++;
-
 	// Reset update flag.
-	TIM2->SR &= ~(TIM_SR_UIF);
+	LPTIM1->ICR |= LPTIM_ICR_ARRMCF;
 
 }
 

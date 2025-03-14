@@ -8,6 +8,7 @@ C_SRCS += \
 ../Core/Src/ble.c \
 ../Core/Src/i2c2.c \
 ../Core/Src/leds.c \
+../Core/Src/lptim.c \
 ../Core/Src/lsm6dsl.c \
 ../Core/Src/main.c \
 ../Core/Src/main.proj2.c \
@@ -21,6 +22,7 @@ OBJS += \
 ./Core/Src/ble.o \
 ./Core/Src/i2c2.o \
 ./Core/Src/leds.o \
+./Core/Src/lptim.o \
 ./Core/Src/lsm6dsl.o \
 ./Core/Src/main.o \
 ./Core/Src/main.proj2.o \
@@ -34,6 +36,7 @@ C_DEPS += \
 ./Core/Src/ble.d \
 ./Core/Src/i2c2.d \
 ./Core/Src/leds.d \
+./Core/Src/lptim.d \
 ./Core/Src/lsm6dsl.d \
 ./Core/Src/main.d \
 ./Core/Src/main.proj2.d \
@@ -51,7 +54,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/ble.cyclo ./Core/Src/ble.d ./Core/Src/ble.o ./Core/Src/ble.su ./Core/Src/i2c2.cyclo ./Core/Src/i2c2.d ./Core/Src/i2c2.o ./Core/Src/i2c2.su ./Core/Src/leds.cyclo ./Core/Src/leds.d ./Core/Src/leds.o ./Core/Src/leds.su ./Core/Src/lsm6dsl.cyclo ./Core/Src/lsm6dsl.d ./Core/Src/lsm6dsl.o ./Core/Src/lsm6dsl.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.proj2.cyclo ./Core/Src/main.proj2.d ./Core/Src/main.proj2.o ./Core/Src/main.proj2.su ./Core/Src/main.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su ./Core/Src/timer.cyclo ./Core/Src/timer.d ./Core/Src/timer.o ./Core/Src/timer.su
+	-$(RM) ./Core/Src/ble.cyclo ./Core/Src/ble.d ./Core/Src/ble.o ./Core/Src/ble.su ./Core/Src/i2c2.cyclo ./Core/Src/i2c2.d ./Core/Src/i2c2.o ./Core/Src/i2c2.su ./Core/Src/leds.cyclo ./Core/Src/leds.d ./Core/Src/leds.o ./Core/Src/leds.su ./Core/Src/lptim.cyclo ./Core/Src/lptim.d ./Core/Src/lptim.o ./Core/Src/lptim.su ./Core/Src/lsm6dsl.cyclo ./Core/Src/lsm6dsl.d ./Core/Src/lsm6dsl.o ./Core/Src/lsm6dsl.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.proj2.cyclo ./Core/Src/main.proj2.d ./Core/Src/main.proj2.o ./Core/Src/main.proj2.su ./Core/Src/main.su ./Core/Src/stm32l4xx_hal_msp.cyclo ./Core/Src/stm32l4xx_hal_msp.d ./Core/Src/stm32l4xx_hal_msp.o ./Core/Src/stm32l4xx_hal_msp.su ./Core/Src/stm32l4xx_it.cyclo ./Core/Src/stm32l4xx_it.d ./Core/Src/stm32l4xx_it.o ./Core/Src/stm32l4xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/system_stm32l4xx.cyclo ./Core/Src/system_stm32l4xx.d ./Core/Src/system_stm32l4xx.o ./Core/Src/system_stm32l4xx.su ./Core/Src/timer.cyclo ./Core/Src/timer.d ./Core/Src/timer.o ./Core/Src/timer.su
 
 .PHONY: clean-Core-2f-Src
 

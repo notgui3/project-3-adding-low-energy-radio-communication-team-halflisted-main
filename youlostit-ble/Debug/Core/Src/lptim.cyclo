@@ -1,0 +1,5 @@
+../Drivers/CMSIS/Include/core_cm4.h:1679:22:__NVIC_EnableIRQ	2
+../Drivers/CMSIS/Include/core_cm4.h:1809:22:__NVIC_SetPriority	2
+../Core/Src/lptim.c:9:6:lptim_init	2
+../Core/Src/lptim.c:53:6:lptim_reset	1
+../Core/Src/lptim.c:56:6:lptim_set_ms	1
