@@ -3,25 +3,16 @@
 
 void lsm6dsl_init(){
 	// Variable to check accelerometer is there, passes in register address and replaces it with 0x6A if there
-	uint8_t who = 0x0F;
+//	uint8_t who = 0x0F;
 	// Array for passing in register address values, data values to write, and values read to and from the i2c transaction
 	uint8_t reg_data[2] = {0};
 
-	//Read Who Am I
-	i2c_transaction(0b11010101, 1, &who, 1);
-	//0b11010101
-
-	//Check if whoAmI is working and accelerometer is present
-	if(who == 0x6A){
-		printf("Accelerometer Found \n");
-	}else{
-		printf("Accelerometer Not Found \n");
-	}
+//
 
 	//Write to CTRL1_XL, set the top 4 bits to 0110 --> 104hz normal mode
 	//Set first value to register address value of CTRL1_XL, and second value to data value you want to write to the register
 	reg_data[0] = 0x10;
-	reg_data[1] = 0b01100000;
+	reg_data[1] = 0b00010000;
 	i2c_transaction(0b11010100, 0, &reg_data, 1);
 
 //	//Read CTRL1_XL  and print it out to make sure we put int he value
@@ -43,10 +34,10 @@ void lsm6dsl_init(){
 //	i2c_transaction(0b11010101, 1, &reg_data, 1);
 //	printf("%d \n", reg_data[0]);
 
-//	//Write to CTRL6_C to disable high performance mode for accelerometer
-//	reg_data[0] = 0x15;
-//	reg_data[1] =  0b00010000;
-//	i2c_transaction(0b11010100, 0, &reg_data, 1);
+	//Write to CTRL6_C to disable high performance mode for accelerometer
+	reg_data[0] = 0x15;
+	reg_data[1] =  0b00010000;
+	i2c_transaction(0b11010100, 0, &reg_data, 1);
 
 
 }
@@ -60,7 +51,6 @@ void lsm6dsl_read_xyz(int16_t* x, int16_t* y, int16_t* z){
 	while(status_data & 0x1){
 		status_data = 0x1E;
 		i2c_transaction(0b11010101, 1, &status_data, 1);
-
 	}
 
 	//Send in register address values for the X, Y, Z low bits and high bits

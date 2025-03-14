@@ -4,6 +4,8 @@
 
 void i2c_init(){
 
+
+
 	//Enable GPIOB Clock
 	RCC->AHB2ENR |= RCC_AHB2ENR_GPIOBEN;
 
@@ -22,17 +24,12 @@ void i2c_init(){
 	GPIOB->AFR[1] &= ~GPIO_AFRH_AFSEL10;
 	GPIOB->AFR[1] |= GPIO_AFRH_AFSEL10_2;
 
-	/* Configure the GPIO output as push pull (transistor for high and low) */
+	/* Configure the GPIO output as open drain */
 	GPIOB->OTYPER |= GPIO_OTYPER_OT10;
 
 	//Set PB 10 to Open Drain
-	GPIOB->PUPDR &= GPIO_PUPDR_PUPD10;
+	GPIOB->PUPDR &= ~GPIO_PUPDR_PUPD10;
 	GPIOB->PUPDR |= GPIO_PUPDR_PUPD10_0;
-
-	/* Configure the GPIO to use low speed mode */
-	GPIOB->OSPEEDR |= (0x3 << GPIO_OSPEEDR_OSPEED10_Pos);
-
-
 
 
 	//Set the GPIOB Pin 11 mode to use alternate function
@@ -48,11 +45,11 @@ void i2c_init(){
 	GPIOB->OTYPER |= GPIO_OTYPER_OT11;
 
 	//Set PB 11 to Open Drain
-	GPIOB->PUPDR &= GPIO_PUPDR_PUPD11;
+	GPIOB->PUPDR &= ~GPIO_PUPDR_PUPD11;
 	GPIOB->PUPDR |= GPIO_PUPDR_PUPD11_0;
 
 	/* Configure the GPIO to use low speed mode */
-	GPIOB->OSPEEDR |= (0x3 << GPIO_OSPEEDR_OSPEED11_Pos);
+	GPIOB->OSPEEDR &= ~GPIOB->OSPEEDR;
 
 
 	// Baud Rate is 100khz
@@ -60,25 +57,27 @@ void i2c_init(){
 	// We set SCLL and SCLH to 16, and SCLDEL and SDADEL to 4
 	// Adding the 4 together, we get 16 + 16 + 4 + 4 = 40
 	// 40 * 250ns = 10000ns which is 100Khz
-	//Set I2C2 SCLL to 16
-	I2C2->TIMINGR |= 0x0000000F;
-	//Set I2C2 SCLH to 16
-	I2C2->TIMINGR |= 0x00000F00;
-	//Set SCLDEL to 4
+	//Set I2C2 SCLL to x
+	I2C2->TIMINGR |= 0x0000000a;
+	//Set I2C2 SCLH to x
+	I2C2->TIMINGR |= 0x00000a00;
+	//Set SCLDEL to 1
 	I2C2->TIMINGR |= 0x00300000;
-	//Set SDADEL to 4
+	//Set SDADEL to 1
 	I2C2->TIMINGR |= 0x00030000;
+	//Set PREC to x
+	I2C2->TIMINGR &= ~I2C_TIMINGR_PRESC;
 
-	//Enable RX interrupts
-	I2C2->CR1 |= I2C_CR1_RXIE;
-	//Enable TX interrupts
-	I2C2->CR1 |= I2C_CR1_TXIE;
-	//Enable NACK interrupts
-	I2C2->CR1 |= I2C_CR1_NACKIE;
-	//Enable STOP interrupts
-	I2C2->CR1 |= I2C_CR1_STOPIE;
-	//Enable TC interrupts
-	I2C2->CR1 |= I2C_CR1_TCIE;
+//	//Enable RX interrupts
+//	I2C2->CR1 |= I2C_CR1_RXIE;
+//	//Enable TX interrupts
+//	I2C2->CR1 |= I2C_CR1_TXIE;
+//	//Enable NACK interrupts
+//	I2C2->CR1 |= I2C_CR1_NACKIE;
+//	//Enable STOP interrupts
+//	I2C2->CR1 |= I2C_CR1_STOPIE;
+//	//Enable TC interrupts
+//	I2C2->CR1 |= I2C_CR1_TCIE;
 
 
 
@@ -88,6 +87,12 @@ void i2c_init(){
 
 
 uint8_t i2c_transaction(uint8_t address, uint8_t dir, uint8_t* data, uint8_t len){
+
+
+
+
+
+
 	//set address mode to 7 bit
 	I2C2->CR2 &= ~I2C_CR2_ADD10;
 	//Set the Slave Address of the Peripheral
@@ -186,6 +191,7 @@ uint8_t i2c_transaction(uint8_t address, uint8_t dir, uint8_t* data, uint8_t len
 
 	//Clear CR2 for next transaction
 	I2C2->CR2 &= ~I2C2->CR2;
+
 	return 0;
 
 }

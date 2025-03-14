@@ -1,6 +1,7 @@
 "./Core/Src/ble.o"
 "./Core/Src/i2c2.o"
 "./Core/Src/leds.o"
+"./Core/Src/lptim.o"
 "./Core/Src/lsm6dsl.o"
 "./Core/Src/main.o"
 "./Core/Src/main.proj2.o"
