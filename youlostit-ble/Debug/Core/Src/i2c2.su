@@ -1,2 +1,2 @@
 ../Core/Src/i2c2.c:5:6:i2c_init	4	static
-../Core/Src/i2c2.c:89:9:i2c_transaction	24	static
+../Core/Src/i2c2.c:90:9:i2c_transaction	24	static

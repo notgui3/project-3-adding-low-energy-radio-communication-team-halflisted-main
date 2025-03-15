@@ -24,11 +24,11 @@ void timer_init(TIM_TypeDef* timer)
 		timer->SR = 0x00000000;
 
 	//Set Auto Reload Register to a value
-		timer->ARR = 1227;
+		timer->ARR = 49;
 
-		//(10*clk_in_hertz)/scalar_value = ARR value --> 10*8000000/65199 = 1227
-	//Slow down both AHB and APB1 to get a 8000 division of the 8MHz to 1Khz for ms auto reload
-		timer->PSC |= 65199;
+
+	//Slow down both AHB and APB1 to get a 4000 division of the 4MHz to 1Khz for ms auto reload
+		timer->PSC |= 7999;
 //		RCC->CFGR |= RCC_CFGR_HPRE_DIV512;
 //		RCC->CFGR |= RCC_CFGR_PPRE1_DIV8;
 
@@ -41,7 +41,7 @@ void timer_init(TIM_TypeDef* timer)
 
 	//Enable interrupts
 		timer->DIER |= TIM_DIER_UIE;
-//		timer->EGR  |= TIM_EGR_UG; // This seems to not have an impact...
+		timer->EGR  |= TIM_EGR_UG; // This seems to not have an impact...
 		NVIC_EnableIRQ(TIM2_IRQn);
 		NVIC_SetPriority(TIM2_IRQn, 1);
 
